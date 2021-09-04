@@ -1,0 +1,33 @@
+$TranslateFromGGL
+EndFunc
+
+
+
+Func GetObj($Tag, $Attribute, $AttributeValue, $oIE = $oIE)
+    $aTags = _IETagNameGetCollection($oIE, $Tag)
+
+    For $aTag In $aTags
+        If StringLower($Attribute) = "innertext" Then
+            If StringInStr($aTag.innerText, $AttributeValue) > 0 Then
+                $GetObj = $aTag
+                ExitLoop
+            EndIf
+        ElseIf StringLower($Attribute) = "class" Or StringLower($Attribute) = "classname" Then
+            If StringInStr($aTag.classname, $AttributeValue) > 0 Then
+                $GetObj = $aTag
+                ;MsgBox("","","found" & $aTag.innerText)
+                ExitLoop
+            EndIf
+        Else
+            If StringInStr($aTag.getAttribute($Attribute), $AttributeValue) > 0 Then
+                $GetObj = $aTag
+                ExitLoop
+            EndIf
+        EndIf
+    Next
+    If $GetObj = "" Then
+
+    Else
+        Return $GetObj
+    EndIf
+EndFunc   ;==>GetObj
